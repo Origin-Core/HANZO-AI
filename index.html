@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HANZO-AI | Origin-Core </title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+    <!-- ==================== هدر ==================== -->
+    <header class="header">
+        <div class="logo-container">
+            <div class="logo-icon">🤖</div>
+            <h1>HANZO<span class="highlight">-AI</span></h1>
+            <span class="version">v0.2</span>
+        </div>
+        <div class="header-actions">
+            <span class="icon" title="حالت گیمینگ" onclick="alert('🎮 حالت گیمینگ فعال شد!')">🎮</span>
+            <span class="icon" title="تنظیمات" onclick="toggleSettings()">⚙️</span>
+        </div>
+    </header>
+
+    <!-- ==================== منوی تنظیمات ==================== -->
+    <div id="settingsMenu" class="settings-menu" style="display:none;">
+        <button onclick="clearHistory()">🗑️ پاک کردن تاریخچه</button>
+        <button onclick="alert('🎵 حالت صوتی فعال شد!')">🔊 حالت صوتی</button>
+        <button onclick="toggleSettings()">❌ بستن</button>
+    </div>
+
+    <!-- ==================== گوی گرافیکی ==================== -->
+    <div class="sphere-container">
+        <div class="graphic-sphere" id="sphere">
+            <div class="sphere-content">
+                <div class="sphere-emoji">🚀</div>
+                <p class="sphere-text">هانزو</p>
+                <span class="sphere-status">آنلاین</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== جعبه چت ==================== -->
+    <div class="chat-box" id="chatBox">
+        <div class="empty-chat">
+            <div style="font-size: 50px;">🤖</div>
+            <h3>به هانزو خوش آمدید!</h3>
+            <p>سوال خود را بپرسید یا با من چت کنید.</p>
+        </div>
+    </div>
+
+    <!-- ==================== بخش ورودی ==================== -->
+    <div class="input-area">
+        <input
+            type="text"
+            id="userInput"
+            placeholder="با هانزو صحبت کن..."
+            onkeypress="if(event.key==='Enter') sendMessage()"
+        />
+        <button class="send-button" onclick="sendMessage()">📤</button>
+        <button class="mic-button" id="micBtn" onclick="toggleMic()">🎤</button>
+    </div>
+
+    <!-- ==================== فوتر ==================== -->
+    <footer class="footer">
+        <p>© 2026 Origin-Core| ساخته شده با ❤️</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
