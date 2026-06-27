@@ -1,8 +1,16 @@
 // ============================================================
-// تنظیمات API
+// تنظیمات API - نسخه OpenRouter با مدل‌های رایگان
 // ============================================================
-const API_KEY = 'sk-26ebbe7e345e45e3befd117e5ff54996';
-const API_URL = 'https://api.openai.com/v1/chat/completions';
+const OPENROUTER_API_KEY = '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';
+const API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+
+// انتخاب مدل رایگان (می‌توانید یکی از این‌ها را جایگزین کنید)
+// 'openrouter/free' - مسیریاب خودکار بهترین مدل رایگان
+// 'deepseek/deepseek-r1-0528:free' - مدل DeepSeek R1
+// 'meta-llama/llama-3.1-8b-instruct:free' - مدل Llama 3.1
+// 'google/gemma-2-9b-it:free' - مدل Gemma 2
+// 'qwen/qwen-2-7b-instruct:free' - مدل Qwen 2
+const MODEL = 'openrouter/free';
 
 // ============================================================
 // المان‌های DOM
@@ -14,7 +22,7 @@ const micBtn = document.getElementById('micBtn');
 let isListening = false;
 
 // ============================================================
-// تابع ارسال پیام به API
+// تابع ارسال پیام به OpenRouter
 // ============================================================
 async function sendMessage() {
     const message = userInput.value.trim();
@@ -44,11 +52,22 @@ async function sendMessage() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${API_KEY}`
+                'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                'HTTP-Referer': window.location.href,
+                'X-Title': 'HANZO-AI'
             },
             body: JSON.stringify({
-                model: 'gpt-3.5-turbo',
-                messages: [{ role: 'user', content: message }],
+                model: MODEL,
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'شما یک دستیار هوشمند و مفید به نام هانزو هستید. به زبان فارسی پاسخ دهید.'
+                    },
+                    {
+                        role: 'user',
+                        content: message
+                    }
+                ],
                 temperature: 0.7,
                 max_tokens: 500
             })
@@ -59,8 +78,13 @@ async function sendMessage() {
         userInput.disabled = false;
         userInput.focus();
 
+        // بررسی پاسخ
         if (data.choices && data.choices[0]) {
-            addMessage('assistant', data.choices[0].message.content);
+            const aiResponse = data.choices[0].message.content;
+            addMessage('assistant', aiResponse);
+        } else if (data.error) {
+            console.error('خطای API:', data.error);
+            addMessage('assistant', `⚠️ خطا: ${data.error.message || 'مشکل در ارتباط با سرور'}`);
         } else {
             addMessage('assistant', '⚠️ خطا: پاسخی از سمت سرور دریافت نشد.');
         }
@@ -167,5 +191,6 @@ window.addEventListener('load', () => {
 // لاگ خوش‌آمدگویی در کنسول
 // ============================================================
 console.log('🚀 HANZO-AI نسخه 0.2');
-console.log('🤖اماده است!');
+console.log('🤖 اماده است!');
+console.log(`📌 مدل فعال: ${MODEL}`);
 console.log('📌 برای شروع، پیام خود را تایپ کنید.');
